@@ -1,6 +1,34 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { loginUser } from '../services/authApi'
+
 
 export default function Login() {
+
+  // inside the component:
+const navigate = useNavigate()
+const [error, setError] = useState('')
+const [loading, setLoading] = useState(false)
+
+async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault()
+  const form = new FormData(e.currentTarget)
+  setLoading(true)
+  setError('')
+  try {
+    const res = await loginUser({
+      email: String(form.get('email')),
+      password: String(form.get('password')),
+    })
+    localStorage.setItem('accessToken', res.accessToken)
+    navigate('/')
+  } catch (err) {
+    setError((err as Error).message)
+  } finally {
+    setLoading(false)
+  }
+}
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
@@ -12,7 +40,7 @@ export default function Login() {
           Sign in to your BookMyEvent account.
         </p>
 
-        <form className="mt-8 space-y-5" onSubmit={(e) => e.preventDefault()}>
+        <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="email" className="mb-2 block text-sm font-medium">
               Email address
@@ -38,6 +66,8 @@ export default function Login() {
               className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-violet-600"
             />
           </div>
+
+          {error && <p className="text-sm text-red-600">{error}</p>}
 
           <button
             type="submit"

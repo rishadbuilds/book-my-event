@@ -1,6 +1,6 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import Logo from '../components/ui/Logo'
-import { useAuth } from '../features/auth/AuthContext'
+import { useAuth } from '../features/auth/context/AuthContext'
 
 export default function UserLayout() {
   const { logout } = useAuth()

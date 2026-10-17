@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { btn, btnOutline } from '../../components/ui/buttonStyles'
-import { useAuth, type Role } from '../../features/auth/AuthContext'
+import { useAuth, type Role } from '../../features/auth/context/AuthContext'
 
 export default function LoginPage() {
   const { login } = useAuth()

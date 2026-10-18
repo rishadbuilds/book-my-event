@@ -1,7 +1,5 @@
 import { randomUUID } from 'crypto'
 import { inject, injectable } from 'tsyringe'
-import { TOKENS } from '../../infrastructure/di/tokens'
-import { User } from '../../../domain/entities/User'
 import { ConflictError } from '../../../domain/errors/AppError'
 import { IUserRepository } from '../../ports/repositories/IUserRepositories'
 import { IPasswordHasher } from '../../ports/services/IPasswordHasher'
@@ -12,9 +10,9 @@ import { UserMapper } from '../../mappers/UserMapper'
 @injectable()
 export class RegisterUser {
   constructor(
-    @inject(TOKENS.UserRepository) private readonly users: IUserRepository,
-    @inject(TOKENS.PasswordHasher) private readonly hasher: IPasswordHasher,
-    @inject(TOKENS.TokenService) private readonly tokens: ITokenService,
+    @inject("UserRepository") private readonly users: IUserRepository,
+    @inject("PasswordHasher") private readonly hasher: IPasswordHasher,
+    @inject("TokenService")private readonly tokens: ITokenService,
   ) {}
 
   async execute(dto: RegisterUserDto): Promise<AuthResponseDto> {

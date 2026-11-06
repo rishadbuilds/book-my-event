@@ -7,6 +7,7 @@ import type {
   AuthUser,
   LoginPayload,
   RegisterPayload,
+  VerifyOtpPayload,
 } from '../types/auth.types'
 import { AuthContext, type AuthContextValue } from './AuthContext'
 
@@ -51,13 +52,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return response.user
   }, [])
 
-  const register = useCallback(async (payload: RegisterPayload) => {
-    const response = await authService.register(payload)
+  /** Step 1 of registration: create pending registration + send OTP. */
+  const register = useCallback(
+    (payload: RegisterPayload) => authService.register(payload),
+    [],
+  )
+
+  /** Step 2: confirm the code. Only now is the account created. */
+  const verifyOtp = useCallback(async (payload: VerifyOtpPayload) => {
+    const response = await authService.verifyOtp(payload)
     tokenStorage.set(response.accessToken)
     setUser(response.user)
     setStatus('authenticated')
     return response.user
   }, [])
+
+  const resendOtp = useCallback(
+    (email: string) => authService.resendOtp(email),
+    [],
+  )
 
   const logout = useCallback(() => {
     tokenStorage.clear()
@@ -72,9 +85,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAuthenticated: status === 'authenticated',
       login,
       register,
+      verifyOtp,
+      resendOtp,
       logout,
     }),
-    [user, status, login, register, logout],
+    [user, status, login, register, verifyOtp, resendOtp, logout],
   )
 
   return <AuthContext value={value}>{children}</AuthContext>

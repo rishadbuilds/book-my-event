@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Mail, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -8,8 +8,10 @@ import { ApiError } from '@/shared/lib/api-client'
 import { useAuth } from '../hooks/useAuth'
 import { registerSchema, toFieldErrors } from '../schemas/auth.schema'
 import type { RegisterValues } from '../schemas/auth.schema'
+import type { RegistrationPending } from '../types/auth.types'
 import { AuthLayout } from './AuthLayout'
 import { FormError, FormField, SubmitButtonLabel } from './FormField'
+import { OtpVerification } from './OtpVerification'
 import { PasswordInput } from './PasswordInput'
 
 const initialValues: RegisterValues = {
@@ -21,9 +23,9 @@ const initialValues: RegisterValues = {
 
 export function RegisterForm() {
   const { register } = useAuth()
-  const navigate = useNavigate()
 
   const [values, setValues] = useState<RegisterValues>(initialValues)
+  const [pending, setPending] = useState<RegistrationPending | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
 
@@ -45,12 +47,12 @@ export function RegisterForm() {
     setErrors({})
 
     try {
-      await register({
+      const result = await register({
         name: parsed.data.name,
         email: parsed.data.email,
         password: parsed.data.password,
       })
-      navigate('/', { replace: true })
+      setPending(result)
     } catch (error) {
       if (error instanceof ApiError) {
         setErrors(
@@ -66,6 +68,15 @@ export function RegisterForm() {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (pending) {
+    return (
+      <OtpVerification
+        initialPending={pending}
+        onBack={() => setPending(null)}
+      />
+    )
   }
 
   return (
@@ -155,8 +166,8 @@ export function RegisterForm() {
         <Button type="submit" size="lg" className="w-full" disabled={loading}>
           <SubmitButtonLabel
             loading={loading}
-            label="Create account"
-            loadingLabel="Creating account…"
+            label="Continue"
+            loadingLabel="Sending code…"
           />
         </Button>
       </form>

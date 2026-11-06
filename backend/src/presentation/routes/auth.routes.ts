@@ -6,7 +6,12 @@ import { AuthController } from '../controllers/AuthController.js'
 import { authenticate } from '../middleware/authenticate.js'
 import { asyncHandler } from '../middleware/asyncHandler.js'
 import { validate } from '../middleware/validate.js'
-import { loginSchema, registerSchema } from '../../application/dtos/auth.dto.js'
+import {
+  loginSchema,
+  registerSchema,
+  resendOtpSchema,
+  verifyOtpSchema,
+} from '../../application/dtos/auth.dto.js'
 
 const authRouter = Router()
 const authController = container.resolve(AuthController)
@@ -15,6 +20,18 @@ authRouter.post(
   '/register',
   validate(registerSchema),
   asyncHandler(authController.register),
+)
+
+authRouter.post(
+  '/verify-otp',
+  validate(verifyOtpSchema),
+  asyncHandler(authController.verifyOtp),
+)
+
+authRouter.post(
+  '/resend-otp',
+  validate(resendOtpSchema),
+  asyncHandler(authController.resendOtp),
 )
 
 authRouter.post(

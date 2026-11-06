@@ -4,6 +4,8 @@ import type {
   AuthUser,
   LoginPayload,
   RegisterPayload,
+  RegistrationPending,
+  VerifyOtpPayload,
 } from '../types/auth.types'
 
 export interface AuthContextValue {
@@ -11,7 +13,9 @@ export interface AuthContextValue {
   status: AuthStatus
   isAuthenticated: boolean
   login: (payload: LoginPayload) => Promise<AuthUser>
-  register: (payload: RegisterPayload) => Promise<AuthUser>
+  register: (payload: RegisterPayload) => Promise<RegistrationPending>
+  verifyOtp: (payload: VerifyOtpPayload) => Promise<AuthUser>
+  resendOtp: (email: string) => Promise<RegistrationPending>
   logout: () => void
 }
 

@@ -1,4 +1,3 @@
-
 import { Schema, model } from 'mongoose'
 import { UserRole } from '../../../shared/constants/Roles.js'
 
@@ -16,6 +15,8 @@ const userSchema = new Schema<UserDocument>(
       type: String,
       required: true,
       trim: true,
+      minlength: 2,
+      maxlength: 60,
     },
     email: {
       type: String,
@@ -23,6 +24,7 @@ const userSchema = new Schema<UserDocument>(
       unique: true,
       lowercase: true,
       trim: true,
+      index: true,
     },
     passwordHash: {
       type: String,
@@ -41,6 +43,7 @@ const userSchema = new Schema<UserDocument>(
       createdAt: true,
       updatedAt: false,
     },
+    versionKey: false,
   },
 )
 

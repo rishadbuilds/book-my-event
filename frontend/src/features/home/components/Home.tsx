@@ -1,4 +1,7 @@
 import { Link } from 'react-router-dom'
+import { CalendarDays } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { useAuth } from '@/features/auth/hooks/useAuth'
 
 const events = [
   {
@@ -28,19 +31,43 @@ const events = [
 ]
 
 export default function Home() {
+  const { user, isAuthenticated, logout } = useAuth()
+
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900">
       <header className="flex items-center justify-between border-b bg-white px-6 py-4 md:px-12">
-        <Link to="/" className="text-2xl font-bold text-violet-600">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-2xl font-bold text-violet-600"
+        >
+          <CalendarDays className="size-6" />
           BookMyEvent
         </Link>
 
-        <Link
-          to="/login"
-          className="rounded-lg bg-violet-600 px-5 py-2.5 font-medium text-white hover:bg-violet-700"
-        >
-          Login
-        </Link>
+        <nav className="flex items-center gap-2">
+          {isAuthenticated && user ? (
+            <>
+              <Link
+                to="/account"
+                className="hidden text-sm font-medium text-gray-600 hover:text-violet-600 sm:block"
+              >
+                Hi, {user.name.split(' ')[0]}
+              </Link>
+              <Button variant="outline" size="lg" onClick={logout}>
+                Log out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="ghost" size="lg" asChild>
+                <Link to="/login">Log in</Link>
+              </Button>
+              <Button size="lg" asChild>
+                <Link to="/register">Get started</Link>
+              </Button>
+            </>
+          )}
+        </nav>
       </header>
 
       <section className="px-6 py-20 text-center">
@@ -58,12 +85,9 @@ export default function Home() {
           showing up for.
         </p>
 
-        <a
-          href="#events"
-          className="mt-8 inline-block rounded-lg bg-violet-600 px-6 py-3 font-semibold text-white hover:bg-violet-700"
-        >
-          Explore events
-        </a>
+        <Button size="lg" className="mt-8" asChild>
+          <a href="#events">Explore events</a>
+        </Button>
       </section>
 
       <section id="events" className="px-6 py-12 md:px-12">
@@ -93,13 +117,12 @@ export default function Home() {
                 <div className="mt-5 flex items-center justify-between border-t pt-4">
                   <p className="text-lg font-bold">₹{event.price}</p>
 
-                  <button
-                    type="button"
-                    className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-700"
+                  <Button
+                    variant="secondary"
                     onClick={() => alert(`Selected: ${event.title}`)}
                   >
                     View event
-                  </button>
+                  </Button>
                 </div>
               </div>
             </article>

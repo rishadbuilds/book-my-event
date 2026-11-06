@@ -1,23 +1,32 @@
 import { inject, injectable } from 'tsyringe'
-import { UnauthorizedError } from '../../domain/errors/AppError'
-import { IUserRepository } from '../ports/IUserRepository'
-import { IPasswordHasher } from '../ports/IPasswordHasher'
-import { ITokenService } from '../ports/ITokenService'
-import { AuthResponseDto, LoginUserDto } from '../dtos/auth.dto'
-import { UserMapper } from '../mappers/UserMapper'
+import { TOKENS } from '../../ports/tokens.js'
+import { UnauthorizedError } from '../../../domain/errors/AppError.js'
+import type { IUserRepository } from '../../ports/repositories/IUserRepository.js'
+import type { IPasswordHasher } from '../../ports/services/IPasswordHasher.js'
+import type { ITokenService } from '../../ports/services/ITokenService.js'
+import type { AuthResponseDto, LoginUserDto } from '../../dtos/auth.dto.js'
+import { UserMapper } from '../../mappers/UserMapper.js'
 
 @injectable()
 export class LoginUser {
   constructor(
-    @inject("UserRepository") private readonly users: IUserRepository,
-    @inject("PasswordHasher") private readonly hasher: IPasswordHasher,
-    @inject("TokenService") private readonly tokens: ITokenService,
+    @inject(TOKENS.UserRepository) private readonly users: IUserRepository,
+    @inject(TOKENS.PasswordHasher) private readonly hasher: IPasswordHasher,
+    @inject(TOKENS.TokenService) private readonly tokens: ITokenService,
   ) {}
 
   async execute(dto: LoginUserDto): Promise<AuthResponseDto> {
     const user = await this.users.findByEmail(dto.email)
-    const valid = user && (await this.hasher.compare(dto.password, user.passwordHash))
-    if (!user || !valid) throw new UnauthorizedError('Invalid email or password')
+
+    // Compare only when the user exists, but return the same error either
+    // way so we never reveal whether an email is registered.
+    const passwordMatches = user
+      ? await this.hasher.compare(dto.password, user.passwordHash)
+      : false
+
+    if (!user || !passwordMatches) {
+      throw new UnauthorizedError('Invalid email or password')
+    }
 
     return {
       user: UserMapper.toResponse(user),

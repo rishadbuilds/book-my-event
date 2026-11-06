@@ -1,7 +1,20 @@
 import { tokenStorage } from './token-storage'
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL ?? 'http://localhost:5000/api'
+  import.meta.env.VITE_API_URL ?? 'http://localhost:5001/api'
+
+interface ApiEnvelope<T> {
+  data: T
+  meta?: unknown
+}
+
+function unwrap<T>(body: unknown): T {
+  if (body && typeof body === 'object' && 'data' in body) {
+    return (body as ApiEnvelope<T>).data
+  }
+
+  return body as T
+}
 
 export interface ApiErrorBody {
   message?: string
@@ -58,11 +71,13 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
     )
   }
 
-  return body as T
+  return unwrap<T>(body)
 }
 
 export const apiClient = {
   get: <T>(path: string) => request<T>(path),
   post: <T>(path: string, body: unknown) =>
     request<T>(path, { method: 'POST', body: JSON.stringify(body) }),
+  patch: <T>(path: string, body: unknown) =>
+    request<T>(path, { method: 'PATCH', body: JSON.stringify(body) }),
 }

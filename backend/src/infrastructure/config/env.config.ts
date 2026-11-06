@@ -26,6 +26,10 @@ const envSchema = z.object({
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
   EMAIL_FROM: z.string().default('BookMyEvent <no-reply@bookmyevent.local>'),
+
+  UPLOAD_DIR: z.string().min(1).default('uploads'),
+  UPLOAD_MAX_FILE_SIZE_MB: z.coerce.number().positive().max(25).default(5),
+  UPLOAD_MAX_FILES: z.coerce.number().int().positive().max(8).default(6),
 })
 
 const parsed = envSchema.safeParse(process.env)
@@ -70,6 +74,11 @@ export const env = {
         from: data.EMAIL_FROM,
       }
     : null,
+  uploads: {
+    dir: data.UPLOAD_DIR,
+    maxFileSizeBytes: Math.round(data.UPLOAD_MAX_FILE_SIZE_MB * 1024 * 1024),
+    maxFiles: data.UPLOAD_MAX_FILES,
+  },
 } as const
 
 export type Env = typeof env

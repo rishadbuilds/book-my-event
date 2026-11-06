@@ -6,5 +6,10 @@ export interface User {
   email: string
   passwordHash: string
   role: UserRole
+  phone?: string
+  avatarUrl?: string
+  bio?: string
+  businessName?: string
   createdAt: Date
+  updatedAt?: Date
 }

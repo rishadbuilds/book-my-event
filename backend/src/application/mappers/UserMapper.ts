@@ -8,7 +8,12 @@ export class UserMapper {
       name: user.name,
       email: user.email,
       role: user.role,
+      phone: user.phone,
+      avatarUrl: user.avatarUrl,
+      bio: user.bio,
+      businessName: user.businessName,
       createdAt: user.createdAt.toISOString(),
+      updatedAt: (user.updatedAt ?? user.createdAt).toISOString(),
     }
   }
 }

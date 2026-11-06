@@ -6,7 +6,12 @@ export interface UserDocument {
   email: string
   passwordHash: string
   role: UserRole
+  phone?: string
+  avatarUrl?: string
+  bio?: string
+  businessName?: string
   createdAt: Date
+  updatedAt: Date
 }
 
 const userSchema = new Schema<UserDocument>(
@@ -37,12 +42,29 @@ const userSchema = new Schema<UserDocument>(
       default: UserRole.USER,
       required: true,
     },
+    phone: {
+      type: String,
+      trim: true,
+      maxlength: 20,
+    },
+    avatarUrl: {
+      type: String,
+      trim: true,
+      maxlength: 500,
+    },
+    bio: {
+      type: String,
+      trim: true,
+      maxlength: 500,
+    },
+    businessName: {
+      type: String,
+      trim: true,
+      maxlength: 120,
+    },
   },
   {
-    timestamps: {
-      createdAt: true,
-      updatedAt: false,
-    },
+    timestamps: true,
     versionKey: false,
   },
 )

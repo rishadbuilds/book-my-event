@@ -54,7 +54,7 @@ export class MongoPendingRegistrationRepository
       },
       {
         upsert: true,
-        new: true,
+        returnDocument: 'after',
         setDefaultsOnInsert: true,
         runValidators: true,
       },
@@ -77,7 +77,7 @@ export class MongoPendingRegistrationRepository
           attempts: 0,
         },
       },
-      { new: true },
+      { returnDocument: 'after' },
     ).exec()
 
     return document ? toEntity(document) : null

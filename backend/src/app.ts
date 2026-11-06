@@ -20,6 +20,17 @@ export function createApp() {
   )
   app.use(express.json({ limit: '1mb' }))
 
+  // Uploaded files are stored locally by the storage adapter. Serving them
+  // from a CDN later only requires changing the adapter, not the API.
+  app.use(
+    '/uploads',
+    express.static(env.uploads.dir, {
+      index: false,
+      dotfiles: 'deny',
+      maxAge: '1d',
+    }),
+  )
+
   app.use('/api', apiRouter)
 
   app.use(notFoundHandler)

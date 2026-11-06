@@ -3,6 +3,7 @@ import type { HydratedDocument } from 'mongoose'
 import type {
   CreateUserData,
   IUserRepository,
+  UpdateUserProfileData,
 } from '../../../application/ports/repositories/IUserRepository.js'
 import type { User } from '../../../domain/entities/User.js'
 import { UserRole } from '../../../shared/constants/Roles.js'
@@ -15,7 +16,12 @@ function toEntity(document: HydratedDocument<UserDocument>): User {
     email: document.email,
     passwordHash: document.passwordHash,
     role: document.role,
+    phone: document.phone,
+    avatarUrl: document.avatarUrl,
+    bio: document.bio,
+    businessName: document.businessName,
     createdAt: document.createdAt,
+    updatedAt: document.updatedAt,
   }
 }
 
@@ -43,8 +49,31 @@ export class MongoUserRepository implements IUserRepository {
       email: data.email.toLowerCase(),
       passwordHash: data.passwordHash,
       role: data.role ?? UserRole.USER,
+      phone: data.phone,
+      avatarUrl: data.avatarUrl,
+      bio: data.bio,
+      businessName: data.businessName,
     })
 
     return toEntity(document)
+  }
+
+  async updateProfile(
+    id: string,
+    data: UpdateUserProfileData,
+  ): Promise<User | null> {
+    const document = await UserModel.findByIdAndUpdate(
+      id,
+      { $set: data },
+      { returnDocument: 'after', runValidators: true },
+    )
+      .select('+passwordHash')
+      .exec()
+
+    return document ? toEntity(document) : null
+  }
+
+  async updatePasswordHash(id: string, passwordHash: string): Promise<void> {
+    await UserModel.updateOne({ _id: id }, { $set: { passwordHash } }).exec()
   }
 }

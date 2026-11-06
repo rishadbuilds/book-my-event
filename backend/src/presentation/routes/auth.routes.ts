@@ -7,9 +7,11 @@ import { authenticate } from '../middleware/authenticate.js'
 import { asyncHandler } from '../middleware/asyncHandler.js'
 import { validate } from '../middleware/validate.js'
 import {
+  changePasswordSchema,
   loginSchema,
   registerSchema,
   resendOtpSchema,
+  updateProfileSchema,
   verifyOtpSchema,
 } from '../../application/dtos/auth.dto.js'
 
@@ -41,5 +43,19 @@ authRouter.post(
 )
 
 authRouter.get('/me', authenticate, asyncHandler(authController.me))
+
+authRouter.patch(
+  '/profile',
+  authenticate,
+  validate(updateProfileSchema),
+  asyncHandler(authController.updateProfile),
+)
+
+authRouter.patch(
+  '/password',
+  authenticate,
+  validate(changePasswordSchema),
+  asyncHandler(authController.changePassword),
+)
 
 export { authRouter }

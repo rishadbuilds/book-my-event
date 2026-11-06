@@ -3,7 +3,12 @@ export interface AuthUser {
   name: string
   email: string
   role: string
+  phone?: string
+  avatarUrl?: string
+  bio?: string
+  businessName?: string
   createdAt: string
+  updatedAt: string
 }
 
 export interface AuthResponse {

@@ -1,11 +1,5 @@
 import type { Response } from 'express'
-
-export interface PaginationMeta {
-  page: number
-  limit: number
-  total: number
-  totalPages: number
-}
+import type { PaginationMeta } from '../../shared/types/Pagination.js'
 
 /**
  * Single response envelope used by the API. Errors keep the

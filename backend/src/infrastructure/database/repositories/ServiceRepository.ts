@@ -1,11 +1,17 @@
 import { injectable } from 'tsyringe'
-import { Types, type HydratedDocument } from 'mongoose'
+import { Types, type HydratedDocument, type mongo } from 'mongoose'
 import type {
   CreateServiceData,
   IServiceRepository,
+  ServiceFacets,
+  ServiceFilters,
+  ServicePage,
   UpdateServiceData,
 } from '../../../application/ports/repositories/IServiceRepository.js'
 import type { Service } from '../../../domain/entities/Service.js'
+import { ServiceSort } from '../../../shared/constants/Service.js'
+import { endOfUtcDay, startOfUtcDay } from '../../../shared/utils/date.js'
+import { escapeRegExp } from '../../../shared/utils/regex.js'
 import { slugify } from '../../../shared/utils/slug.js'
 import { ServiceModel, type ServiceDocument } from '../models/ServiceModel.js'
 
@@ -84,6 +90,96 @@ export class MongoServiceRepository implements IServiceRepository {
       slug: slug.toLowerCase(),
     }).exec()
     return document ? toEntity(document) : null
+  }
+
+  async findMany(filters: ServiceFilters): Promise<ServicePage> {
+    const query: mongo.Filter<ServiceDocument> = {}
+
+    if (filters.activeOnly !== false) query.isActive = true
+    if (filters.providerId) {
+      query.providerId = new Types.ObjectId(filters.providerId)
+    }
+    if (filters.category) query.category = filters.category
+
+    if (filters.search) {
+      const term = escapeRegExp(filters.search)
+      query.$or = [
+        { name: { $regex: term, $options: 'i' } },
+        { description: { $regex: term, $options: 'i' } },
+        { location: { $regex: term, $options: 'i' } },
+      ]
+    }
+
+    if (filters.location) {
+      query.location = {
+        $regex: `^${escapeRegExp(filters.location)}$`,
+        $options: 'i',
+      }
+    }
+
+    if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
+      query.price = {
+        ...(filters.minPrice !== undefined
+          ? { $gte: filters.minPrice }
+          : {}),
+        ...(filters.maxPrice !== undefined
+          ? { $lte: filters.maxPrice }
+          : {}),
+      }
+    }
+
+    if (filters.date) {
+      const start = startOfUtcDay(filters.date)
+      query.blockedDates = {
+        $not: { $elemMatch: { $gte: start, $lt: endOfUtcDay(filters.date) } },
+      }
+    }
+
+    const sortBy: Record<string, 1 | -1> =
+      filters.sort === ServiceSort.PRICE_ASC
+        ? { price: 1, createdAt: -1 }
+        : filters.sort === ServiceSort.PRICE_DESC
+          ? { price: -1, createdAt: -1 }
+          : { createdAt: -1 }
+
+    const skip = (filters.page - 1) * filters.limit
+
+    const [documents, total] = await Promise.all([
+      ServiceModel.find(query)
+        .sort(sortBy)
+        .skip(skip)
+        .limit(filters.limit)
+        .exec(),
+      ServiceModel.countDocuments(query).exec(),
+    ])
+
+    return { items: documents.map(toEntity), total }
+  }
+
+  async getFacets(): Promise<ServiceFacets> {
+    const [locations, priceRows] = await Promise.all([
+      ServiceModel.distinct('location', { isActive: true }).exec(),
+      ServiceModel.aggregate<{
+        _id: null
+        minPrice: number
+        maxPrice: number
+      }>([
+        { $match: { isActive: true } },
+        {
+          $group: {
+            _id: null,
+            minPrice: { $min: '$price' },
+            maxPrice: { $max: '$price' },
+          },
+        },
+      ]).exec(),
+    ])
+
+    return {
+      locations: (locations as string[]).sort((a, b) => a.localeCompare(b)),
+      minPrice: priceRows[0]?.minPrice ?? null,
+      maxPrice: priceRows[0]?.maxPrice ?? null,
+    }
   }
 
   async findByProvider(providerId: string): Promise<Service[]> {

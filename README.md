@@ -83,6 +83,14 @@ VITE_API_URL=http://localhost:5001/api
 | PATCH  | `/api/auth/password`      | Bearer         | Change the current password              |
 | POST   | `/api/uploads/images`     | Provider/Admin | Upload 1–6 service images                |
 | GET    | `/uploads/*`              | No             | Serve uploaded images                    |
+| GET    | `/api/services`           | No             | Search, filter, sort and page services   |
+| GET    | `/api/services/meta`      | No             | Categories, locations and price range    |
+| GET    | `/api/services/:slug`     | No             | Public service detail                    |
+| POST   | `/api/services`           | Provider/Admin | Create a service                         |
+| PATCH  | `/api/services/:id`       | Provider/Admin | Update a service (owner or admin)        |
+| DELETE | `/api/services/:id`       | Provider/Admin | Soft-delete a service (owner or admin)   |
+| GET    | `/api/provider/services`  | Provider/Admin | Provider's services; admin sees all     |
+| GET    | `/api/provider/services/:id` | Provider/Admin | Service detail for management         |
 
 Successful responses use a single envelope:
 
@@ -136,6 +144,30 @@ Verified auth responses have the shape:
 ```
 
 Errors use `{ "message": "...", "errors": [{ "field": "...", "message": "..." }] }`.
+
+## Service discovery
+
+`GET /api/services` supports the following query parameters:
+
+| Parameter  | Values                                                       | Default  |
+| ---------- | ------------------------------------------------------------ | -------- |
+| `q`        | Free-text search across name, description and location       | –        |
+| `category` | `venue`, `hotel`, `catering`, `photography`, `dj`, `decoration`, `event-planner` | – |
+| `location` | Exact, case-insensitive location                             | –        |
+| `minPrice` | Minimum price                                                | –        |
+| `maxPrice` | Maximum price                                                | –        |
+| `date`     | ISO date; excludes services blocking that day                | –        |
+| `sort`     | `newest`, `price-asc`, `price-desc`                          | `newest` |
+| `page`     | Page number (1-based)                                        | `1`      |
+| `limit`    | Page size (max 48)                                           | `12`     |
+
+Public listings and detail pages only return active services. Provider listings
+include inactive services so owners can reactivate them. `DELETE` is a soft
+delete (`isActive: false`) so booking history and shared links stay valid.
+
+Providers can only create, update, and delete their own services; admins can
+manage every service. Admin-created services must include a `providerId`.
+Service slugs are generated from the name and made unique with a numeric suffix.
 
 ## Seed data
 

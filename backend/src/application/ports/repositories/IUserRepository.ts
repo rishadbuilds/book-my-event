@@ -1,4 +1,5 @@
 import type { User } from '../../../domain/entities/User.js'
+import type { UserSummary } from '../../../domain/entities/UserSummary.js'
 
 export interface CreateUserData {
   name: string
@@ -26,6 +27,7 @@ export interface UpdateUserProfileData {
 export interface IUserRepository {
   findByEmail(email: string): Promise<User | null>
   findById(id: string): Promise<User | null>
+  findSummariesByIds(ids: string[]): Promise<UserSummary[]>
   create(data: CreateUserData): Promise<User>
   updateProfile(id: string, data: UpdateUserProfileData): Promise<User | null>
   updatePasswordHash(id: string, passwordHash: string): Promise<void>

@@ -15,8 +15,15 @@ export enum PriceUnit {
   PER_HOUR = 'per-hour',
 }
 
+export enum ServiceSort {
+  NEWEST = 'newest',
+  PRICE_ASC = 'price-asc',
+  PRICE_DESC = 'price-desc',
+}
+
 export const SERVICE_CATEGORY_VALUES = Object.values(ServiceCategory)
 export const PRICE_UNIT_VALUES = Object.values(PriceUnit)
+export const SERVICE_SORT_VALUES = Object.values(ServiceSort)
 
 export const SERVICE_CATEGORY_LABELS: Record<ServiceCategory, string> = {
   [ServiceCategory.VENUE]: 'Venues',

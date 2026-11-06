@@ -6,6 +6,7 @@ import type {
   UpdateUserProfileData,
 } from '../../../application/ports/repositories/IUserRepository.js'
 import type { User } from '../../../domain/entities/User.js'
+import type { UserSummary } from '../../../domain/entities/UserSummary.js'
 import { UserRole } from '../../../shared/constants/Roles.js'
 import { UserModel, type UserDocument } from '../models/UserModel.js'
 
@@ -41,6 +42,22 @@ export class MongoUserRepository implements IUserRepository {
       .exec()
 
     return document ? toEntity(document) : null
+  }
+
+  async findSummariesByIds(ids: string[]): Promise<UserSummary[]> {
+    if (ids.length === 0) return []
+
+    const documents = await UserModel.find({ _id: { $in: ids } })
+      .select('name businessName avatarUrl bio')
+      .exec()
+
+    return documents.map((document) => ({
+      id: document.id,
+      name: document.name,
+      businessName: document.businessName,
+      avatarUrl: document.avatarUrl,
+      bio: document.bio,
+    }))
   }
 
   async create(data: CreateUserData): Promise<User> {

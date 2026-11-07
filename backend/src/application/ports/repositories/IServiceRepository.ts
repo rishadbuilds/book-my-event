@@ -45,6 +45,8 @@ export interface ServiceFilters {
   limit: number
   activeOnly?: boolean
   providerId?: string
+  /** Services that already hold an exclusive booking on the requested day. */
+  excludeServiceIds?: string[]
 }
 
 export interface ServicePage {

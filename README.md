@@ -91,6 +91,11 @@ VITE_API_URL=http://localhost:5001/api
 | DELETE | `/api/services/:id`       | Provider/Admin | Soft-delete a service (owner or admin)   |
 | GET    | `/api/provider/services`  | Provider/Admin | Provider's services; admin sees all     |
 | GET    | `/api/provider/services/:id` | Provider/Admin | Service detail for management         |
+| POST   | `/api/bookings`           | Bearer         | Create a booking for a service           |
+| GET    | `/api/bookings`           | Bearer         | Current customer's bookings              |
+| GET    | `/api/bookings/:id`       | Bearer         | Booking detail (customer/provider/admin) |
+| PATCH  | `/api/bookings/:id/status` | Bearer        | Apply a booking status transition        |
+| GET    | `/api/provider/bookings`  | Provider/Admin | Provider's bookings; admin sees all      |
 
 Successful responses use a single envelope:
 
@@ -168,6 +173,52 @@ delete (`isActive: false`) so booking history and shared links stay valid.
 Providers can only create, update, and delete their own services; admins can
 manage every service. Admin-created services must include a `providerId`.
 Service slugs are generated from the name and made unique with a numeric suffix.
+
+## Bookings
+
+A booking stores a snapshot of the service name, location, image, unit price,
+and the customer's contact details, so history stays readable if a service is
+edited later. The server calculates `totalPrice`: per-person services multiply
+the unit price by `guestCount`; all other price units use the service price.
+
+```json
+{
+  "serviceId": "…",
+  "eventDate": "2027-03-15",
+  "guestCount": 120,
+  "notes": "Window seats for grandparents",
+  "phone": "+91 99887 70000"
+}
+```
+
+`phone` is optional when the customer's profile already has one. Bookings cannot
+be created for inactive services, dates blocked by the provider, past dates, or
+your own service.
+
+### Status lifecycle
+
+| From        | Allowed next states                   |
+| ----------- | ------------------------------------- |
+| `pending`   | `confirmed`, `rejected`, `cancelled`  |
+| `confirmed` | `completed`, `cancelled`              |
+| `rejected`  | –                                     |
+| `cancelled` | –                                     |
+| `completed` | –                                     |
+
+Customers may cancel their own pending or confirmed bookings. Providers may
+confirm, reject, complete, or cancel bookings for their services. Admins may
+apply any valid transition. Terminal states cannot be reopened.
+
+### Double-booking protection
+
+Exclusive services (`allowsMultipleBookings: false`) can only have one active
+booking per calendar day. A partial unique index on
+`{ serviceId, eventDate, isActive }` where `isActive: true` enforces this in
+MongoDB, including when two requests race. Terminal statuses release the slot.
+
+Services with `allowsMultipleBookings: true` create bookings with
+`isActive: false`, bypassing the partial index. `GET /api/services?date=...`
+excludes exclusive services that already hold a booking on that day.
 
 ## Seed data
 

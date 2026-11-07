@@ -2,6 +2,7 @@ import 'reflect-metadata'
 import { container } from 'tsyringe'
 import { TOKENS } from '../../application/ports/tokens.js'
 import { env } from '../config/env.config.js'
+import { MongoBookingRepository } from '../database/repositories/BookingRepository.js'
 import { MongoPendingRegistrationRepository } from '../database/repositories/PendingRegistrationRepository.js'
 import { MongoServiceRepository } from '../database/repositories/ServiceRepository.js'
 import { MongoUserRepository } from '../database/repositories/UserRepository.js'
@@ -23,6 +24,9 @@ container.register(TOKENS.PendingRegistrationRepository, {
 })
 container.register(TOKENS.ServiceRepository, {
   useClass: MongoServiceRepository,
+})
+container.register(TOKENS.BookingRepository, {
+  useClass: MongoBookingRepository,
 })
 container.register(TOKENS.PasswordHasher, { useClass: BcryptPasswordHasher })
 container.register(TOKENS.TokenService, { useClass: JwtTokenService })

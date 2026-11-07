@@ -2,9 +2,13 @@ import 'reflect-metadata'
 import mongoose from 'mongoose'
 import { createApp } from './app.js'
 import { env } from './infrastructure/config/env.config.js'
+import { BookingModel } from './infrastructure/database/models/BookingModel.js'
 
 async function bootstrap(): Promise<void> {
   await mongoose.connect(env.mongoUri)
+  // Wait for the partial unique index before accepting bookings so the
+  // double-booking guarantee is active from the first request.
+  await BookingModel.init()
   console.log('✅ MongoDB connected')
 
   const app = createApp()

@@ -3,6 +3,7 @@ export const TOKENS = {
   UserRepository: Symbol.for('UserRepository'),
   PendingRegistrationRepository: Symbol.for('PendingRegistrationRepository'),
   ServiceRepository: Symbol.for('ServiceRepository'),
+  BookingRepository: Symbol.for('BookingRepository'),
   PasswordHasher: Symbol.for('PasswordHasher'),
   TokenService: Symbol.for('TokenService'),
   OtpGenerator: Symbol.for('OtpGenerator'),

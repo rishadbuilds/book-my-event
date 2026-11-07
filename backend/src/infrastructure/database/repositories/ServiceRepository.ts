@@ -101,6 +101,12 @@ export class MongoServiceRepository implements IServiceRepository {
     }
     if (filters.category) query.category = filters.category
 
+    if (filters.excludeServiceIds?.length) {
+      query._id = {
+        $nin: filters.excludeServiceIds.map((id) => new Types.ObjectId(id)),
+      }
+    }
+
     if (filters.search) {
       const term = escapeRegExp(filters.search)
       query.$or = [

@@ -2,9 +2,11 @@ import { apiClient } from '@/shared/lib/api-client'
 import type {
   AuthResponse,
   AuthUser,
+  ChangePasswordPayload,
   LoginPayload,
   RegisterPayload,
   RegistrationPending,
+  UpdateProfilePayload,
   VerifyOtpPayload,
 } from '../types/auth.types'
 
@@ -23,4 +25,10 @@ export const authService = {
     apiClient.post<RegistrationPending>('/auth/resend-otp', { email }),
 
   me: () => apiClient.get<{ user: AuthUser }>('/auth/me'),
+
+  updateProfile: (payload: UpdateProfilePayload) =>
+    apiClient.patch<{ user: AuthUser }>('/auth/profile', payload),
+
+  changePassword: (payload: ChangePasswordPayload) =>
+    apiClient.patch<{ message: string }>('/auth/password', payload),
 }

@@ -18,15 +18,15 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+          <Route element={<GuestRoute />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Route>
+
           <Route element={<SiteLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/services/:slug" element={<ServiceDetailPage />} />
-
-            <Route element={<GuestRoute />}>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-            </Route>
 
             <Route element={<ProtectedRoute />}>
               <Route path="/account" element={<AccountPage />} />

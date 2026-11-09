@@ -41,4 +41,17 @@ export interface VerifyOtpPayload {
   otp: string
 }
 
+export interface UpdateProfilePayload {
+  name?: string
+  phone?: string
+  avatarUrl?: string
+  bio?: string
+  businessName?: string
+}
+
+export interface ChangePasswordPayload {
+  currentPassword: string
+  newPassword: string
+}
+
 export type AuthStatus = 'loading' | 'authenticated' | 'guest'

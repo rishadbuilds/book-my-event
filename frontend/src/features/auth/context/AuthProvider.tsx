@@ -7,6 +7,7 @@ import type {
   AuthUser,
   LoginPayload,
   RegisterPayload,
+  UpdateProfilePayload,
   VerifyOtpPayload,
 } from '../types/auth.types'
 import { AuthContext, type AuthContextValue } from './AuthContext'
@@ -72,6 +73,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [],
   )
 
+  const updateProfile = useCallback(async (payload: UpdateProfilePayload) => {
+    const { user: updated } = await authService.updateProfile(payload)
+    setUser(updated)
+    return updated
+  }, [])
+
   const logout = useCallback(() => {
     tokenStorage.clear()
     setUser(null)
@@ -87,9 +94,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       register,
       verifyOtp,
       resendOtp,
+      updateProfile,
       logout,
     }),
-    [user, status, login, register, verifyOtp, resendOtp, logout],
+    [
+      user,
+      status,
+      login,
+      register,
+      verifyOtp,
+      resendOtp,
+      updateProfile,
+      logout,
+    ],
   )
 
   return <AuthContext value={value}>{children}</AuthContext>

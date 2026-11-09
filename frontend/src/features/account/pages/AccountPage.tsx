@@ -17,6 +17,8 @@ import {
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { useAuth } from '@/features/auth/hooks/useAuth'
+import { PasswordForm } from '../components/PasswordForm'
+import { ProfileForm } from '../components/ProfileForm'
 
 function initials(name: string) {
   return name
@@ -127,6 +129,30 @@ export default function AccountPage() {
               <Link to="/services">Browse services</Link>
             </Button>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card className="mt-6">
+        <CardHeader className="gap-1 px-6 pt-6">
+          <CardTitle className="text-xl">Edit profile</CardTitle>
+          <CardDescription>
+            Keep your contact details current so providers can reach you.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="px-6 pb-6">
+          <ProfileForm />
+        </CardContent>
+      </Card>
+
+      <Card className="mt-6">
+        <CardHeader className="gap-1 px-6 pt-6">
+          <CardTitle className="text-xl">Change password</CardTitle>
+          <CardDescription>
+            Use at least 8 characters with uppercase, lowercase and a number.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="px-6 pb-6">
+          <PasswordForm />
         </CardContent>
       </Card>
     </main>

@@ -166,21 +166,31 @@ export default function ServicesPage() {
   )
 
   return (
+
     <main className="mx-auto max-w-6xl px-4 py-10 md:px-6">
-      <section className="mb-8 overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-violet-600 to-fuchsia-500 px-6 py-10 text-white md:px-10">
-        <p className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold tracking-wide uppercase">
-          <Sparkles className="size-3.5" />
-          Every celebration, one place
-        </p>
-        <h1 className="mt-4 max-w-2xl text-3xl font-extrabold md:text-5xl">
-          Find the perfect team for your next event
-        </h1>
-        <p className="mt-3 max-w-xl text-sm text-violet-100 md:text-base">
-          Compare venues, caterers, photographers, DJs and more. Check live
-          availability and book in minutes.
-        </p>
+      {/* Hero Section */}
+      <section className="relative mb-8 overflow-hidden rounded-3xl bg-neutral-950 px-6 py-10 text-white dark:bg-black md:px-10">
+        <div className="pointer-events-none absolute -top-20 -right-16 size-64 rounded-full bg-white/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-20 -left-16 size-64 rounded-full bg-neutral-500/10 blur-3xl" />
+
+        <div className="relative">
+          <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide uppercase">
+            <Sparkles className="size-3.5" />
+            Every celebration, one place
+          </p>
+
+          <h1 className="mt-4 max-w-2xl text-3xl font-extrabold md:text-5xl">
+            Find the perfect team for your next event
+          </h1>
+
+          <p className="mt-3 max-w-xl text-sm text-neutral-300 md:text-base">
+            Compare venues, caterers, photographers, DJs and more. Check live
+            availability and book in minutes.
+          </p>
+        </div>
       </section>
 
+      {/* Filters */}
       <ServiceFilters
         key={paramsKey}
         meta={filterMeta}
@@ -189,10 +199,12 @@ export default function ServicesPage() {
         onClear={clearFilters}
       />
 
+      {/* Results Heading */}
       <div className="mt-8 flex items-baseline justify-between gap-3">
         <h2 className="text-xl font-bold">
           {query.q ? `Results for “${query.q}”` : 'Available services'}
         </h2>
+
         {meta && (
           <p className="text-sm text-muted-foreground">
             {meta.total} service{meta.total === 1 ? '' : 's'}
@@ -200,6 +212,7 @@ export default function ServicesPage() {
         )}
       </div>
 
+      {/* Services Results */}
       <div className="mt-5">
         {loading ? (
           <LoadingState label="Finding services…" />
@@ -220,10 +233,12 @@ export default function ServicesPage() {
                 <ServiceCard key={service.id} service={service} />
               ))}
             </div>
+
             {meta && <Pagination meta={meta} onChange={changePage} />}
           </>
         )}
       </div>
     </main>
+
   )
 }

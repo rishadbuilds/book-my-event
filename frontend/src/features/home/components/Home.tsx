@@ -72,9 +72,10 @@ export default function Home() {
 
   return (
     <main>
-      <section className="relative overflow-hidden bg-gradient-to-br from-violet-700 via-violet-600 to-fuchsia-500 px-4 py-20 text-white md:px-6 md:py-28">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-neutral-950 px-4 py-20 text-white md:px-6 md:py-28 dark:bg-black">
         <div className="pointer-events-none absolute -top-24 -right-16 size-72 rounded-full bg-white/10 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 -left-16 size-72 rounded-full bg-fuchsia-300/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 -left-16 size-72 rounded-full bg-neutral-500/20 blur-3xl" />
 
         <div className="relative mx-auto max-w-4xl text-center">
           <p className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold tracking-wide uppercase">
@@ -84,12 +85,12 @@ export default function Home() {
 
           <h1 className="mt-5 text-4xl font-extrabold leading-tight md:text-6xl">
             Discover services.
-            <span className="block text-violet-100">
+            <span className="block text-neutral-300 dark:text-neutral-400">
               Create unforgettable events.
             </span>
           </h1>
 
-          <p className="mx-auto mt-5 max-w-xl text-violet-100">
+          <p className="mx-auto mt-5 max-w-xl text-neutral-300">
             Venues, catering, photography, music, and more — compare trusted
             providers, check live availability, and book in minutes.
           </p>
@@ -101,6 +102,7 @@ export default function Home() {
                 <ArrowRight />
               </Link>
             </Button>
+
             {!isAuthenticated && (
               <Button
                 size="lg"
@@ -114,8 +116,8 @@ export default function Home() {
           </div>
 
           {isAuthenticated && user && (
-            <p className="mt-5 text-sm text-violet-100">
-              Signed in as {user.name}.{' '}
+            <p className="mt-5 text-sm text-neutral-300">
+              Signed in as {user.name}.{" "}
               <Link to="/bookings" className="font-semibold underline">
                 View your bookings
               </Link>
@@ -125,6 +127,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Categories Section */}
       <section className="mx-auto max-w-6xl px-4 py-14 md:px-6">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
@@ -135,6 +138,7 @@ export default function Home() {
               Everything you need to bring the celebration together.
             </p>
           </div>
+
           <Button variant="ghost" asChild>
             <Link to="/services">
               See all
@@ -148,10 +152,10 @@ export default function Home() {
             <Link
               key={category.value}
               to={`/services?category=${category.value}`}
-              className="group rounded-2xl border border-border bg-card p-4 text-center transition hover:-translate-y-1 hover:border-violet-300 hover:shadow-md dark:hover:border-primary/60"
+              className="group rounded-2xl border border-border bg-card p-4 text-center transition hover:-translate-y-1 hover:border-neutral-400 hover:shadow-md dark:hover:border-neutral-500"
             >
               <span className="text-3xl">{category.emoji}</span>
-              <p className="mt-2 text-sm font-semibold group-hover:text-primary">
+              <p className="mt-2 text-sm font-semibold group-hover:text-foreground">
                 {category.label}
               </p>
             </Link>
@@ -159,7 +163,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-card px-4 py-14 md:px-6">
+      {/* Featured Services Section */}
+      <section className="bg-muted/40 px-4 py-14 md:px-6 dark:bg-neutral-950">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
@@ -170,6 +175,7 @@ export default function Home() {
                 Freshly added services from our providers.
               </p>
             </div>
+
             <Button variant="ghost" asChild>
               <Link to="/services?sort=newest">
                 View all services
@@ -199,24 +205,28 @@ export default function Home() {
         </div>
       </section>
 
+      {/* How It Works Section */}
       <section className="mx-auto max-w-6xl px-4 py-14 md:px-6">
         <h2 className="text-center text-2xl font-extrabold md:text-3xl">
           Booking made simple
         </h2>
+
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {steps.map((step, index) => (
             <div
               key={step.title}
-              className="rounded-2xl border border-border bg-card p-6"
+              className="rounded-2xl border border-border bg-card p-6 transition hover:-translate-y-1 hover:border-neutral-400 dark:hover:border-neutral-500"
             >
               <div className="flex items-center gap-3">
-                <div className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary">
+                <div className="grid size-10 place-items-center rounded-xl bg-secondary text-secondary-foreground">
                   <step.icon className="size-5" />
                 </div>
+
                 <span className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                   Step {index + 1}
                 </span>
               </div>
+
               <h3 className="mt-4 text-lg font-bold">{step.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground">
                 {step.description}
@@ -226,23 +236,27 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Bottom CTA Section */}
       <section className="mx-auto max-w-6xl px-4 pb-16 md:px-6">
-        <div className="rounded-3xl bg-gray-900 px-6 py-10 text-center text-white dark:border dark:border-border dark:bg-card dark:text-foreground md:px-10">
+        <div className="rounded-3xl bg-neutral-900 px-6 py-10 text-center text-white dark:border dark:border-border dark:bg-neutral-950 md:px-10">
           <h2 className="text-2xl font-extrabold md:text-3xl">
             Ready to plan your next event?
           </h2>
-          <p className="mx-auto mt-2 max-w-xl text-sm text-gray-300 dark:text-muted-foreground">
+
+          <p className="mx-auto mt-2 max-w-xl text-sm text-neutral-300">
             Create an account to book services and keep every request in one
             place.
           </p>
+
           <Button size="lg" className="mt-6" asChild>
-            <Link to={isAuthenticated ? '/services' : '/register'}>
-              {isAuthenticated ? 'Browse services' : 'Get started free'}
+            <Link to={isAuthenticated ? "/services" : "/register"}>
+              {isAuthenticated ? "Browse services" : "Get started free"}
               <ArrowRight />
             </Link>
           </Button>
         </div>
       </section>
     </main>
+
   )
 }

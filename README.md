@@ -69,6 +69,30 @@ The frontend reads `VITE_API_URL` from `frontend/.env`:
 VITE_API_URL=http://localhost:5001/api
 ```
 
+## Frontend
+
+The React app is built with React 19, React Router, Tailwind CSS v4 and a small
+typed `apiClient` fetch wrapper. It follows the same `{ data, meta }` envelope
+as the API.
+
+| Route              | Access         | Purpose                                       |
+| ------------------ | -------------- | --------------------------------------------- |
+| `/`                | Public         | Landing page with categories and newest items |
+| `/services`        | Public         | Search, filter, sort and page services        |
+| `/services/:slug`  | Public         | Service detail, provider info and booking form|
+| `/login`           | Guests         | Sign in                                       |
+| `/register`        | Guests         | OTP-backed registration                       |
+| `/account`         | Signed in      | Profile summary and shortcuts                 |
+| `/bookings`        | Signed in      | Customer booking history and cancellation     |
+| `/dashboard`       | Provider/Admin | Service management and booking requests       |
+
+Discovery supports text search, category, location, price range, event date and
+sorting. Date-filtered listings hide exclusive services that are already booked.
+The detail page shows images, provider details, blocked dates and a booking form
+with a live price estimate. Providers and admins manage services (including
+image uploads, publish/hide and blocked dates) and apply booking status
+transitions from the dashboard.
+
 ## API
 
 | Method | Endpoint                  | Auth           | Description                              |

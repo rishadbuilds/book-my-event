@@ -287,9 +287,31 @@ created.
 ## Scripts
 
 Backend: `npm run dev`, `npm run build`, `npm start`, `npm run typecheck`,
-`npm run seed`.
+`npm test`, `npm run test:watch`, `npm run seed`.
 
 Frontend: `npm run dev`, `npm run build`, `npm run lint`, `npm run preview`.
+
+## Testing
+
+The backend has an automated integration suite built with Vitest, Supertest and
+`mongodb-memory-server`. It starts a disposable MongoDB instance, exercises the
+real Express app and cleans the database between tests.
+
+```bash
+cd backend
+npm test            # run once
+npm run test:watch  # watch mode
+```
+
+The suite covers auth/OTP, profile and password changes, service discovery,
+provider/admin permissions, booking creation and pricing, availability,
+double-booking protection (including the concurrent race), listing scopes and
+the full booking status lifecycle.
+
+`mongodb-memory-server` reuses a locally installed `mongod` binary when one is
+found at `/opt/homebrew/bin/mongod`, `/usr/local/bin/mongod` or
+`/usr/bin/mongod`. Otherwise it downloads a compatible binary on first run. No
+external database or running server is required.
 
 ## Auth flow
 

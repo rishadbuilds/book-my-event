@@ -80,10 +80,10 @@ export function ServiceFilters({
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm"
+      className="rounded-2xl border border-border bg-card p-4 shadow-sm"
     >
       <div className="flex items-center gap-2 pb-4 text-sm font-semibold">
-        <SlidersHorizontal className="size-4 text-violet-600" />
+        <SlidersHorizontal className="size-4 text-primary" />
         Find the right fit
       </div>
 

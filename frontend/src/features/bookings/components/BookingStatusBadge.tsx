@@ -2,11 +2,15 @@ import { cn } from '@/lib/utils'
 import type { BookingStatus } from '../types/booking.types'
 
 const STATUS_STYLES: Record<BookingStatus, string> = {
-  pending: 'bg-amber-50 text-amber-700 ring-amber-200',
-  confirmed: 'bg-emerald-50 text-emerald-700 ring-emerald-200',
-  rejected: 'bg-rose-50 text-rose-700 ring-rose-200',
-  cancelled: 'bg-gray-100 text-gray-600 ring-gray-200',
-  completed: 'bg-violet-50 text-violet-700 ring-violet-200',
+  pending:
+    'bg-amber-50 text-amber-700 ring-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:ring-amber-800',
+  confirmed:
+    'bg-emerald-50 text-emerald-700 ring-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:ring-emerald-800',
+  rejected:
+    'bg-rose-50 text-rose-700 ring-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:ring-rose-800',
+  cancelled: 'bg-muted text-muted-foreground ring-border',
+  completed:
+    'bg-primary/10 text-primary ring-violet-200 dark:ring-violet-800',
 }
 
 export function BookingStatusBadge({

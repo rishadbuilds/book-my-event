@@ -111,16 +111,16 @@ export function BookingForm({ service }: { service: Service }) {
 
   if (created) {
     return (
-      <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center">
-        <CheckCircle2 className="mx-auto size-10 text-emerald-600" />
-        <h2 className="mt-3 text-lg font-bold text-emerald-900">
+      <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center dark:border-emerald-800 dark:bg-emerald-950/40">
+        <CheckCircle2 className="mx-auto size-10 text-emerald-600 dark:text-emerald-400" />
+        <h2 className="mt-3 text-lg font-bold text-emerald-900 dark:text-emerald-100">
           Booking request sent
         </h2>
-        <p className="mt-1 text-sm text-emerald-800">
+        <p className="mt-1 text-sm text-emerald-800 dark:text-emerald-200">
           {created.service.name} on {formatDate(created.eventDate)} ·{' '}
           {formatCurrency(created.totalPrice)}
         </p>
-        <p className="mt-1 text-sm text-emerald-800">
+        <p className="mt-1 text-sm text-emerald-800 dark:text-emerald-200">
           The provider will review your request. You can track its status in My
           bookings.
         </p>
@@ -138,7 +138,7 @@ export function BookingForm({ service }: { service: Service }) {
 
   if (!isAuthenticated) {
     return (
-      <div className="rounded-2xl border bg-white p-6">
+      <div className="rounded-2xl border bg-card p-6">
         <h2 className="text-lg font-bold">Book this service</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Sign in to check availability and send a booking request. It only
@@ -164,7 +164,7 @@ export function BookingForm({ service }: { service: Service }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
+      className="rounded-2xl border border-border bg-card p-6 shadow-sm"
     >
       <div className="flex items-start justify-between gap-3">
         <div>
@@ -173,7 +173,7 @@ export function BookingForm({ service }: { service: Service }) {
             {formatCurrency(service.price)} {service.priceUnitLabel}
           </p>
         </div>
-        <CalendarCheck className="size-5 text-violet-600" />
+        <CalendarCheck className="size-5 text-primary" />
       </div>
 
       <div className="mt-5 space-y-4">
@@ -256,15 +256,15 @@ export function BookingForm({ service }: { service: Service }) {
         </div>
       </div>
 
-      <div className="mt-5 rounded-xl bg-violet-50 p-4">
+      <div className="mt-5 rounded-xl bg-primary/10 p-4">
         <div className="flex items-center justify-between text-sm">
-          <span className="text-violet-900">Estimated total</span>
-          <span className="text-lg font-bold text-violet-900">
+          <span className="text-foreground">Estimated total</span>
+          <span className="text-lg font-bold text-foreground">
             {formatCurrency(estimate)}
           </span>
         </div>
         {service.priceUnit === 'per-person' && (
-          <p className="mt-1 text-xs text-violet-700">
+          <p className="mt-1 text-xs text-primary">
             {formatCurrency(service.price)} × {guestCount || 0} guests
           </p>
         )}

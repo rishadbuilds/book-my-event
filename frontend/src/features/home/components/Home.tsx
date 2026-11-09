@@ -148,10 +148,10 @@ export default function Home() {
             <Link
               key={category.value}
               to={`/services?category=${category.value}`}
-              className="group rounded-2xl border border-gray-200 bg-white p-4 text-center transition hover:-translate-y-1 hover:border-violet-300 hover:shadow-md"
+              className="group rounded-2xl border border-border bg-card p-4 text-center transition hover:-translate-y-1 hover:border-violet-300 hover:shadow-md dark:hover:border-primary/60"
             >
               <span className="text-3xl">{category.emoji}</span>
-              <p className="mt-2 text-sm font-semibold group-hover:text-violet-700">
+              <p className="mt-2 text-sm font-semibold group-hover:text-primary">
                 {category.label}
               </p>
             </Link>
@@ -159,7 +159,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white px-4 py-14 md:px-6">
+      <section className="bg-card px-4 py-14 md:px-6">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
@@ -183,11 +183,11 @@ export default function Home() {
               Array.from({ length: 3 }).map((_, index) => (
                 <div
                   key={index}
-                  className="h-80 animate-pulse rounded-2xl bg-gray-100"
+                  className="h-80 animate-pulse rounded-2xl bg-muted"
                 />
               ))
             ) : featured.length === 0 ? (
-              <p className="col-span-full rounded-xl border bg-gray-50 p-8 text-center text-sm text-muted-foreground">
+              <p className="col-span-full rounded-xl border bg-muted p-8 text-center text-sm text-muted-foreground">
                 No services are listed yet. Check back soon.
               </p>
             ) : (
@@ -207,10 +207,10 @@ export default function Home() {
           {steps.map((step, index) => (
             <div
               key={step.title}
-              className="rounded-2xl border border-gray-200 bg-white p-6"
+              className="rounded-2xl border border-border bg-card p-6"
             >
               <div className="flex items-center gap-3">
-                <div className="grid size-10 place-items-center rounded-xl bg-violet-50 text-violet-600">
+                <div className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary">
                   <step.icon className="size-5" />
                 </div>
                 <span className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
@@ -227,11 +227,11 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 pb-16 md:px-6">
-        <div className="rounded-3xl bg-gray-900 px-6 py-10 text-center text-white md:px-10">
+        <div className="rounded-3xl bg-gray-900 px-6 py-10 text-center text-white dark:border dark:border-border dark:bg-card dark:text-foreground md:px-10">
           <h2 className="text-2xl font-extrabold md:text-3xl">
             Ready to plan your next event?
           </h2>
-          <p className="mx-auto mt-2 max-w-xl text-sm text-gray-300">
+          <p className="mx-auto mt-2 max-w-xl text-sm text-gray-300 dark:text-muted-foreground">
             Create an account to book services and keep every request in one
             place.
           </p>

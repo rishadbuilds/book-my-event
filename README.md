@@ -93,6 +93,10 @@ with a live price estimate. Providers and admins manage services (including
 image uploads, publish/hide and blocked dates) and apply booking status
 transitions from the dashboard.
 
+The navbar includes a light/dark theme toggle. The choice is saved in
+`localStorage` and applied before React mounts to avoid a flash; on a first
+visit the app follows the operating system preference.
+
 ## API
 
 | Method | Endpoint                  | Auth           | Description                              |

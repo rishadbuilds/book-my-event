@@ -194,7 +194,7 @@ export function ServiceForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
+      className="rounded-2xl border border-border bg-card p-5 shadow-sm"
     >
       <div className="flex items-start justify-between gap-3">
         <div>

@@ -49,7 +49,7 @@ export default function AccountPage() {
 
         <CardContent className="px-6 pb-6">
           <div className="flex items-center gap-4 py-4">
-            <div className="grid size-14 place-items-center rounded-full bg-violet-100 text-lg font-bold text-violet-700">
+            <div className="grid size-14 place-items-center rounded-full bg-primary/15 text-lg font-bold text-primary">
               {initials(user.name)}
             </div>
             <div>

@@ -108,7 +108,7 @@ export function OtpVerification({
           <button
             type="button"
             onClick={onBack}
-            className="font-semibold text-violet-600 hover:text-violet-700"
+            className="font-semibold text-primary hover:text-primary"
           >
             Edit your details
           </button>

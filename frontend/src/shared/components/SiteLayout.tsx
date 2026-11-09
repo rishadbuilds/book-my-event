@@ -3,12 +3,13 @@ import { CalendarDays, LayoutDashboard, LogOut, Ticket } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/features/auth/hooks/useAuth'
+import { ThemeToggle } from './ThemeToggle'
 
 function navLinkClass({ isActive }: { isActive: boolean }) {
   return cn(
     'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
     isActive
-      ? 'bg-violet-50 text-violet-700'
+      ? 'bg-primary/10 text-primary'
       : 'text-muted-foreground hover:bg-muted hover:text-foreground',
   )
 }
@@ -25,12 +26,12 @@ export function SiteLayout() {
   }
 
   return (
-    <div className="flex min-h-svh flex-col bg-gray-50 text-gray-900">
-      <header className="sticky top-0 z-20 border-b bg-white/95 backdrop-blur">
+    <div className="flex min-h-svh flex-col bg-background text-foreground">
+      <header className="sticky top-0 z-20 border-b bg-background/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 md:px-6">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-xl font-bold text-violet-600"
+            className="inline-flex items-center gap-2 text-xl font-bold text-primary"
           >
             <CalendarDays className="size-5" />
             BookMyEvent
@@ -59,11 +60,13 @@ export function SiteLayout() {
               </NavLink>
             )}
 
+            <ThemeToggle />
+
             {isAuthenticated && user ? (
               <div className="ml-2 flex items-center gap-2 border-l pl-2">
                 <Link
                   to="/account"
-                  className="hidden text-sm font-medium text-muted-foreground hover:text-violet-600 sm:block"
+                  className="hidden text-sm font-medium text-muted-foreground hover:text-primary sm:block"
                 >
                   {user.name.split(' ')[0]}
                 </Link>
@@ -90,7 +93,7 @@ export function SiteLayout() {
         <Outlet />
       </div>
 
-      <footer className="border-t bg-white">
+      <footer className="border-t bg-card">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between md:px-6">
           <p>© {new Date().getFullYear()} BookMyEvent</p>
           <p>Plan less. Celebrate more.</p>

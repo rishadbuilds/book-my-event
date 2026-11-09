@@ -7,13 +7,16 @@ import { formatCurrency } from '@/shared/lib/format'
 import type { Service } from '../types/service.types'
 
 const CATEGORY_ACCENTS: Record<string, string> = {
-  venue: 'bg-rose-50 text-rose-700',
-  hotel: 'bg-sky-50 text-sky-700',
-  catering: 'bg-amber-50 text-amber-700',
-  photography: 'bg-indigo-50 text-indigo-700',
-  dj: 'bg-fuchsia-50 text-fuchsia-700',
-  decoration: 'bg-emerald-50 text-emerald-700',
-  'event-planner': 'bg-violet-50 text-violet-700',
+  venue: 'bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300',
+  hotel: 'bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300',
+  catering:
+    'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300',
+  photography:
+    'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300',
+  dj: 'bg-fuchsia-50 text-fuchsia-700 dark:bg-fuchsia-950/40 dark:text-fuchsia-300',
+  decoration:
+    'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300',
+  'event-planner': 'bg-primary/10 text-primary dark:bg-primary/20',
 }
 
 export function ServiceCard({ service }: { service: Service }) {
@@ -21,10 +24,10 @@ export function ServiceCard({ service }: { service: Service }) {
   const providerName = service.provider?.businessName ?? service.provider?.name
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+    <article className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
       <Link
         to={`/services/${service.slug}`}
-        className="relative block h-44 overflow-hidden bg-violet-100"
+        className="relative block h-44 overflow-hidden bg-primary/15"
       >
         {image ? (
           <img
@@ -40,13 +43,13 @@ export function ServiceCard({ service }: { service: Service }) {
           className={cn(
             'absolute top-3 left-3 rounded-full px-2.5 py-1 text-xs font-semibold',
             CATEGORY_ACCENTS[service.category] ??
-              'bg-violet-50 text-violet-700',
+              'bg-primary/10 text-primary',
           )}
         >
           {service.categoryLabel}
         </span>
         {service.allowsMultipleBookings && (
-          <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-gray-700">
+          <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-card/90 px-2.5 py-1 text-xs font-medium text-foreground">
             <Users className="size-3" />
             Multi-booking
           </span>
@@ -57,7 +60,7 @@ export function ServiceCard({ service }: { service: Service }) {
         <h3 className="text-lg font-bold leading-snug">
           <Link
             to={`/services/${service.slug}`}
-            className="hover:text-violet-600"
+            className="hover:text-primary"
           >
             {service.name}
           </Link>
@@ -74,7 +77,7 @@ export function ServiceCard({ service }: { service: Service }) {
           </p>
         )}
 
-        <p className="mt-3 line-clamp-2 text-sm text-gray-600">
+        <p className="mt-3 line-clamp-2 text-sm text-muted-foreground">
           {service.description}
         </p>
 

@@ -127,7 +127,7 @@ export function ProviderBookingsPanel() {
           onChange={(event) =>
             changeStatus(event.target.value as BookingStatus | '')
           }
-          className="h-8 rounded-lg border border-input bg-white px-2 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+          className="h-8 rounded-lg border border-input bg-card px-2 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           <option value="">All statuses</option>
           {(Object.keys(BOOKING_STATUS_LABELS) as BookingStatus[]).map(

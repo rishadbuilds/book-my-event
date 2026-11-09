@@ -17,9 +17,9 @@ export function BookingCard({
   const image = assetUrl(booking.service.image)
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+    <article className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
       <div className="flex flex-col gap-4 p-4 sm:flex-row">
-        <div className="h-28 w-full shrink-0 overflow-hidden rounded-xl bg-violet-100 sm:w-36">
+        <div className="h-28 w-full shrink-0 overflow-hidden rounded-xl bg-primary/15 sm:w-36">
           {image ? (
             <img
               src={image}
@@ -52,28 +52,28 @@ export function BookingCard({
             <div>
               <dt className="text-xs text-muted-foreground">Event date</dt>
               <dd className="mt-0.5 flex items-center gap-1.5 font-medium">
-                <CalendarDays className="size-3.5 text-violet-600" />
+                <CalendarDays className="size-3.5 text-primary" />
                 {formatDate(booking.eventDate)}
               </dd>
             </div>
             <div>
               <dt className="text-xs text-muted-foreground">Guests</dt>
               <dd className="mt-0.5 flex items-center gap-1.5 font-medium">
-                <Users className="size-3.5 text-violet-600" />
+                <Users className="size-3.5 text-primary" />
                 {booking.guestCount}
               </dd>
             </div>
             <div>
               <dt className="text-xs text-muted-foreground">Total</dt>
               <dd className="mt-0.5 flex items-center gap-1.5 font-semibold">
-                <ReceiptText className="size-3.5 text-violet-600" />
+                <ReceiptText className="size-3.5 text-primary" />
                 {formatCurrency(booking.totalPrice)}
               </dd>
             </div>
           </dl>
 
           {booking.notes && (
-            <p className="mt-3 rounded-lg bg-gray-50 px-3 py-2 text-sm text-gray-600">
+            <p className="mt-3 rounded-lg bg-muted px-3 py-2 text-sm text-muted-foreground">
               “{booking.notes}”
             </p>
           )}

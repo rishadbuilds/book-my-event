@@ -142,7 +142,7 @@ export default function MyBookingsPage() {
               'shrink-0 rounded-full px-3 py-1.5 text-sm font-medium transition-colors',
               status === tab.value
                 ? 'bg-violet-600 text-white'
-                : 'bg-white text-gray-600 ring-1 ring-gray-200 hover:bg-violet-50',
+                : 'bg-card text-muted-foreground ring-1 ring-border hover:bg-primary/10',
             )}
           >
             {tab.label}

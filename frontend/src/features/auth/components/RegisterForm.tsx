@@ -88,7 +88,7 @@ export function RegisterForm() {
           Already have an account?{' '}
           <Link
             to="/login"
-            className="font-semibold text-violet-600 hover:text-violet-700"
+            className="font-semibold text-primary hover:text-primary"
           >
             Sign in
           </Link>

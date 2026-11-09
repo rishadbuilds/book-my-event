@@ -147,7 +147,7 @@ export default function ProviderDashboardPage() {
     <main className="mx-auto max-w-6xl px-4 py-10 md:px-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-sm font-semibold text-violet-600">
+          <p className="text-sm font-semibold text-primary">
             {user?.role === 'admin' ? 'Admin' : 'Provider'} dashboard
           </p>
           <h1 className="mt-1 text-3xl font-extrabold">
@@ -180,7 +180,7 @@ export default function ProviderDashboardPage() {
             className={cn(
               '-mb-px border-b-2 px-4 py-2 text-sm font-medium transition-colors',
               tab === item.value
-                ? 'border-violet-600 text-violet-700'
+                ? 'border-violet-600 text-primary'
                 : 'border-transparent text-muted-foreground hover:text-foreground',
             )}
           >
@@ -252,9 +252,9 @@ export default function ProviderDashboardPage() {
                 return (
                   <article
                     key={service.id}
-                    className="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center"
+                    className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm sm:flex-row sm:items-center"
                   >
-                    <div className="h-24 w-full shrink-0 overflow-hidden rounded-xl bg-violet-100 sm:w-32">
+                    <div className="h-24 w-full shrink-0 overflow-hidden rounded-xl bg-primary/15 sm:w-32">
                       {image ? (
                         <img
                           src={image}
@@ -275,14 +275,14 @@ export default function ProviderDashboardPage() {
                           className={cn(
                             'rounded-full px-2 py-0.5 text-xs font-semibold',
                             service.isActive
-                              ? 'bg-emerald-50 text-emerald-700'
-                              : 'bg-gray-100 text-gray-600',
+                              ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300'
+                              : 'bg-muted text-muted-foreground',
                           )}
                         >
                           {service.isActive ? 'Live' : 'Hidden'}
                         </span>
                         {service.allowsMultipleBookings && (
-                          <span className="rounded-full bg-sky-50 px-2 py-0.5 text-xs font-semibold text-sky-700">
+                          <span className="rounded-full bg-sky-50 px-2 py-0.5 text-xs font-semibold text-sky-700 dark:bg-sky-950/40 dark:text-sky-300">
                             Multi-booking
                           </span>
                         )}
